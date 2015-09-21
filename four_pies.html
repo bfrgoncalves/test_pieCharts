@@ -16,7 +16,7 @@
 
         function onLoad() {
             var graphGenerator = Viva.Graph.generator();
-            var graph = graphGenerator.grid(20, 20);
+            var graph = graphGenerator.grid(1, 1);
             var layout = Viva.Graph.Layout.forceDirected(graph, {
                     springLength : 10,
                     springCoeff : 0.0008,
@@ -95,6 +95,7 @@
                 width: 100%;
                 position: absolute;
                 margin: 0;
+                background-color: white;
             }
             #selectByMetadata{
                 position: absolute;
