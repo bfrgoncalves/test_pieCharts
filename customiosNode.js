@@ -194,39 +194,16 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                 // Since it's floating point we can only use 24 bit to pack colors...
                 // thus alpha channel is dropped, and is always assumed to be 1.
                 'attribute vec2 a_customAttributes;',
-                String(attributesToVertex),
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
-                'varying float angles['+String(numberOfAngles)+'];',
-                'varying float colorIndex['+String(numberOfAngles)+'];',
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
                 '   gl_PointSize = a_customAttributes[1] * u_transform[0][0];',
-                    anglesToArray,
                 '}'].join('\n'),
 
                 nodesFS = [
                 'precision mediump float;',
-                'const int numberOfAngles = ' + String(numberOfAngles) + ';',
-                'varying float angles[numberOfAngles];',
-                'varying float colorIndex[numberOfAngles];',
-
-                'vec4 currentColor = vec4(1,0,0,1);',
-                //'varying vec2 vTexCoord;', //get the passing value from the vertex shader
-
-                'vec4 getColor(float col){',
-                    'vec4 colorToUse;',
-
-                    'float c = col;',
-                 '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
-                 '   colorToUse.a = 1.0;',
-
-                 'return colorToUse;',
-
-                '}',
                 
                 'void main(){',
 
