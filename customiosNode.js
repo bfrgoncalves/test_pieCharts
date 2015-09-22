@@ -267,6 +267,8 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                         'found = true;',
                    '}',
 
+                   //
+
                     
 
                 'if (found == false){',
