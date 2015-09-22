@@ -230,58 +230,7 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                 
                 'void main(){',
 
-                    'float prevAngle = radians(0.0);',
-                    'float radQuad = radians(90.0);',
-                    'float totalAngles = 0.0;',
-
-                    'bool found = false;',
-                    'bool hasRest = false;',
-                    'float rad = 0.0;',
-                    'float AngleToUse = 0.0;',
-                    'float rest;',
-                    'int prevAngleNumber = 0;',
-                    'float prevTotal = 0.0;',
-
-                    'if (gl_PointCoord.y <= 0.5 && gl_PointCoord.x <= 0.5){',
-
-                        'gl_FragColor = vec4(0, 1, 0, 1);',
-                        'found = true;',
-
-                    '}',
-
-                    'else if (gl_PointCoord.y < 0.5 && gl_PointCoord.x > 0.5){',
-
-                        'gl_FragColor = vec4(1, 0, 0, 1);',
-                        'found = true;',
-                    '}',
-
-                   'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x >= 0.5){',
-
-                        'gl_FragColor = vec4(1, 0, 1, 1);',
-                        'found = true;',
-                    '}',
-
-                    'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x <= 0.5){',
-
-                        'gl_FragColor = vec4(0, 1, 1, 1);',
-                        'found = true;',
-                   '}',
-
-                   //
-
-                    
-
-                'if (found == false){',
-                    'if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25){',
-                        'gl_FragColor = vec4(0, 0, 1, 1);',
-                    '}',
-                    'else{',
-                        'gl_FragColor = vec4(0);',
-                    '}',
-                '}',
-                 'else if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) > 0.25){',
-                    ' gl_FragColor = vec4(0);',
-                 '}',
+                    'gl_FragColor = vec4(1, 0, 0, 1);',
                     
                 '}'].join('\n');
                 
