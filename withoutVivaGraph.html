@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<style type='text/css'>
+            body, #c {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                margin: 0;
+                background-color: white;
+            }
+            #selectByMetadata{
+                position: absolute;
+            }
+        </style>
+<body>
+    <canvas id = 'c'></canvas>
+    <select id="selectByMetadata">
+            <option value= "1">1</option>
+            <option value= "2">2</option>
+            <option value= "3">3</option>
+        </select></div>
+</body>
+    <script src="jquery-2.1.3.min.js"></script>
+    <script src ='graphWithoutViva.js'></script>
+    <script src ='webgl-utils.js'></script> <!-- USES THE UTILS DEFINED -->
+    <script>
+
+    var c = document.getElementById('c');
+    var gl = c.getContext('experimental-webgl');
+
+    var dataToUse = [1];
+    var colorToUse = [0x1f77b4];
+
+    constructPie(new WebglCircle(60, 0x009ee8, dataToUse, colorToUse, null));
+
+    $('#selectByMetadata').change(function(d){
+              element = $('#selectByMetadata');
+                propertyToCheck = element.find(":selected").text();
+
+                if (propertyToCheck == 1){
+                    dataToUse = [1];
+                    colorToUse = [0x1f77b4];
+                }
+                else if(propertyToCheck == 2){
+                    dataToUse = [1,2];
+                    colorToUse = [0x1f77b4, 0xaec7e8];
+                }
+                else if (propertyToCheck == 3){
+                    dataToUse = [1, 4, 2];
+                    colorToUse = [0x1f77b4, 0x98df8a, 0xdbdb8d];
+                }
+
+                constructPie(new WebglCircle(60, 0x009ee8, dataToUse, colorToUse, null));
+
+                
+            });
+
+    </script>
+
+
+</html>
