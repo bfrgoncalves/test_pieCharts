@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>VivaGraph Custom Node Shader in WebGL</title>
+        <script src="vivagraph.js"></script>
+        <script src="customNodeProgram.js"></script>
+        <script src="jquery-2.1.3.min.js"></script>
+        <script type='text/javascript'>
+        // Vivagraph is more about layout than it is about UI rendering.
+        // Customization of webgl rendering is way to complex at the
+        // moment, I'm sorry!
+
+        // This demo shows how to write a custom node shader to render webgl
+        // nodes in a form of circle.
+
+        function onLoad() {
+            var graphGenerator = Viva.Graph.generator();
+            var graph = graphGenerator.grid(50, 50);
+            var layout = Viva.Graph.Layout.forceDirected(graph, {
+                    springLength : 10,
+                    springCoeff : 0.0008,
+                    dragCoeff : 0.02,
+                    gravity : -1.2
+                });
+            var nodeColor = 0x009ee8, // hex rrggbb
+                nodeSize = 12;
+
+            var graphics = Viva.Graph.View.webglGraphics();
+
+            var angleNumbers = 4;
+            var totalChars = 2;
+            var dataToUse = [1];
+            var colorToUse = [0x1f77b4]; 
+            //
+
+            // first, tell webgl graphics we want to use custom shader
+            // to render nodes:
+            var circleNode = buildCircleNodeShader(angleNumbers, totalChars);
+            graphics.setNodeProgram(circleNode);
+
+            // second, change the node ui model, which can be understood
+            // by the custom shader:
+            graphics.node(function (node) {
+                return new WebglCircle(nodeSize, nodeColor, dataToUse, colorToUse, null);
+             });
+
+            var renderer = Viva.Graph.View.renderer(graph, {
+                    layout    : layout,
+                    graphics  : graphics,
+                    container : document.getElementById('graphContainer')
+                });
+
+            renderer.run();
+
+            $('#selectByMetadata').change(function(d){
+              element = $('#selectByMetadata');
+                propertyToCheck = element.find(":selected").text();
+
+                if (propertyToCheck == 1){
+                    angleNumbers = 4;
+                    dataToUse = [1];
+                    colorToUse = [0x1f77b4];
+                }
+                else if(propertyToCheck == 2){
+                    angleNumbers = 5;
+                    dataToUse = [1,2];
+                    colorToUse = [0x1f77b4, 0xaec7e8];
+                }
+                else if (propertyToCheck == 3){
+                    angleNumbers = 6;
+                    dataToUse = [1, 4, 2];
+                    colorToUse = [0x1f77b4, 0x98df8a, 0xdbdb8d];
+                }
+
+                changePieData(graphics, angleNumbers, 1); //First change shaders
+                renderer.run(); //Restart nodes
+
+                
+            });
+        }
+
+
+        function changePieData(graphics, dataLength, totalTypes) {
+            var circleNode = buildCircleNodeShader(dataLength, totalTypes);
+            graphics.setNodeProgram(circleNode);
+  
+        }
+
+        
+        </script>
+        <style type='text/css'>
+            body, #graphContainer {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                margin: 0;
+                background-color: white;
+            }
+            #selectByMetadata{
+                position: absolute;
+            }
+            .label {
+                position: absolute;
+                top: 10px;
+                color: white;
+                font-size: 14px;
+                left: 10px;
+                font-family: monospace;
+            }
+        </style>
+    </head>
+    <body onload="onLoad()" style="background-color: black;">
+        <div id='graphContainer'></div>
+        <div>
+        <select id="selectByMetadata">
+            <option value= "1">1</option>
+            <option value= "2">2</option>
+            <option value= "3">3</option>
+        </select></div>
+    </body>
+</html>
