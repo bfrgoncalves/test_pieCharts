@@ -1,12 +1,8 @@
-function WebglCircle(size, color, data, colorIndexes, rawData) {
-			circleDataArray = assignQuadrant(getDataPercentage(data), colorIndexes);
+// Lets start from the easiest part - model object for node ui in webgl
+        function WebglCircle(size, color) {
             this.size = size;
             this.color = color;
-            this.data = circleDataArray[0];
-            this.rawData = rawData;
-            this.colorIndexes = circleDataArray[1];
-
-}
+        }
 
 function getDataPercentage(data) {
     var arrayData = [];
@@ -100,95 +96,21 @@ function assignQuadrant(dataInPercentage, colorIndexes){
 
 }
 
-function buildCircleNodeShader(angleNumbers, totalTypes) {
+function buildCircleNodeShader() {
             // For each primitive we need 4 attributes: x, y, color and size.
-            var ATTRIBUTES_PER_PRIMITIVE = 4 + (angleNumbers * 2), //angle numbers + color Indexes
-                                                                   //totalTypes are passed directly to the fragment shader
-
-
-            numberOfAngles = angleNumbers,
-            attributesToVertex = '',
-            anglesToArray = '',
-            remainingAngles = numberOfAngles,
-            countvec4 = 0,
-            currentIndexA = 0,
-            currentIndexC = 0,
-            elementsPerVec = [];
-
-            //console.log(ATTRIBUTES_PER_PRIMITIVE)
-
-            var first = true;
-
-            //console.log(ATTRIBUTES_PER_PRIMITIVE);
-
-            var firstTime = 0;
-
-            while(remainingAngles / 2 >= 1 || remainingAngles > 0){
-
-                countvec4 += 1;
-
-                var vecIndexes = 0;
-                var attrTag = '';
-
-                if (remainingAngles >= 2){
-                    attrTag = 'vec4';
-                    vecIndexes = 4;
-                    elementsPerVec.push(vecIndexes);
-                } 
-                else if(remainingAngles == 1){
-                    attrTag = 'vec2';
-                    vecIndexes = 2;
-                    elementsPerVec.push(vecIndexes);
-                }
-                // else{
-                //     attrTag += String(remainingAngles);
-                //     vecIndexes = remainingAngles;
-                // } 
-
-                attributesToVertex += 'attribute '+ attrTag +' a_anglesAndColors' + String(countvec4) + ';\n';
-                //attributesToVertex += 'attribute '+ attrTag +' a_colorIndex' + String(countvec4) + ';\n';
-
-                var isAngle = true;
-
-                for (i = 1; i <= vecIndexes; i++){
-                    
-                    if (vecIndexes == 1){
-                        anglesToArray += '  angles[' + String(currentIndexA) + '] = a_anglesAndColors' + String(countvec4) + ';\n';
-                        anglesToArray += '  colorIndex[' + String(currentIndexC) + '] = a_colorIndex' + String(countvec4) + ';\n';
-                    }
-                    else{
-                        if (isAngle){
-                            anglesToArray += 'angles[' + String(currentIndexA) + '] = a_anglesAndColors' + String(countvec4) + '[' + String(i-1) + '];\n';
-                            currentIndexA += 1;
-                            isAngle = false;
-                        } 
-                        else{
-                            anglesToArray += 'colorIndex[' + String(currentIndexC) + '] = a_anglesAndColors' + String(countvec4) + '[' + String(i-1) + '];\n';
-                            currentIndexC += 1;
-                            isAngle = true;
-                        }
-                    }
-                }
-
-                remainingAngles = remainingAngles - 2;
-                
-            }
-
-
-
-            attributesToVertex += 'const int numberOfAngles = ' +  String(numberOfAngles) + ';\n';
-
-
-
-            // for (i = 0; i<numberOfAngles; i++){
-
-            //     anglesToArray += '  angles[' + String(i) + '] = a_angle' + String(i+1) + ';\n';
-            //     anglesToArray += '  colorIndex[' + String(i) + '] = a_colorIndex' + String(i+1) + ';\n';
-            // }
-
-
-            var nodesVS = [
+            var ATTRIBUTES_PER_PRIMITIVE = 4,
+                nodesFS = [
                 'precision mediump float;',
+                'varying vec4 color;',
+
+                'void main(void) {',
+                '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
+                '     gl_FragColor = color;',
+                '   } else {',
+                '     gl_FragColor = vec4(0);',
+                '   }',
+                '}'].join('\n'),
+                nodesVS = [
                 'attribute vec2 a_vertexPos;',
                 // Pack clor and size into vector. First elemnt is color, second - size.
                 // Since it's floating point we can only use 24 bit to pack colors...
@@ -196,31 +118,17 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                 'attribute vec2 a_customAttributes;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
+                'varying vec4 color;',
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
                 '   gl_PointSize = a_customAttributes[1] * u_transform[0][0];',
-                '}'].join('\n'),
-
-                nodesFS = [
-                'precision mediump float;',
-                
-                'void main(){',
-
-                    'if (found == false){',
-                        'if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25){',
-                            'gl_FragColor = vec4(0, 0, 1, 1);',
-                        '}',
-                        'else{',
-                            'gl_FragColor = vec4(0);',
-                        '}',
-                    '}',
-                    'else if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) > 0.25){',
-                        ' gl_FragColor = vec4(0);',
-                    '}',
-                    
-                    '}'].join('\n');
-                
+                '   float c = a_customAttributes[0];',
+                '   color.b = mod(c, 256.0); c = floor(c/256.0);',
+                '   color.g = mod(c, 256.0); c = floor(c/256.0);',
+                '   color.r = mod(c, 256.0); c = floor(c/256.0); color /= 255.0;',
+                '   color.a = 1.0;',
+                '}'].join('\n');
 
             var program,
                 gl,
@@ -232,38 +140,20 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                 canvasWidth, canvasHeight, transform,
                 isCanvasDirty;
 
-
             return {
                 /**
                  * Called by webgl renderer to load the shader into gl context.
                  */
                 load : function (glContext) {
-                    
                     gl = glContext;
-
-                    //alert(gl.getParameter(gl.MAX_VARYING_VECTORS));
-
-                    //if (prevNodeProgram != null) gl.deleteProgram(prevNodeProgram);
-
                     webglUtils = Viva.Graph.webgl(glContext);
-                    program = webglUtils.createProgram(nodesVS, nodesFS);
-                    //prevNodeProgram = program;
 
+                    program = webglUtils.createProgram(nodesVS, nodesFS);
+                    gl.useProgram(program);
                     locations = webglUtils.getLocations(program, ['a_vertexPos', 'a_customAttributes', 'u_screenSize', 'u_transform']);
 
                     gl.enableVertexAttribArray(locations.vertexPos);
-                    //gl.enableVertexAttribArray(locations.customAttributes);
-
-                    //console.log(locations.customAttributes);
-
-
-                    var prevNodeIndex = 0;
-
-                    for (o = 0; o <= countvec4; o++){
-                         gl.enableVertexAttribArray(locations.customAttributes + o);
-                    }
-
-
+                    gl.enableVertexAttribArray(locations.customAttributes);
 
                     buffer = gl.createBuffer();
                 },
@@ -276,25 +166,10 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                  */
                 position : function (nodeUI, pos) {
                     var idx = nodeUI.id;
-                    //console.log(nodeUI.data);
-                    var prevNodeIndex = 0;
-
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = nodeUI.color;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = nodeUI.size;
-                    var countTimes = 0;
-
-                    for (x = 1; x<= numberOfAngles; x++){
-                        nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3 + x + prevNodeIndex] = nodeUI.data[x-1];
-                        nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3 + x + 1 + prevNodeIndex] = nodeUI.colorIndexes[x-1];
-                        prevNodeIndex += 1;
-                    }
-                    //console.log(nodeUI.colorIndexes);
-                    // if(firstTime<1) console.log(nodes);
-                    //  firstTime += 1;
-
-
                 },
 
                 /**
@@ -306,33 +181,15 @@ function buildCircleNodeShader(angleNumbers, totalTypes) {
                     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
                     gl.bufferData(gl.ARRAY_BUFFER, nodes, gl.DYNAMIC_DRAW);
 
-                    if (first){
-                        first = false;
-                    }
-
                     if (isCanvasDirty) {
                         isCanvasDirty = false;
                         gl.uniformMatrix4fv(locations.transform, false, transform);
                         gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
                     }
 
-
-
-                    //Since you are using GL_FLOAT as type, which has a size of 4 bytes, the offset is only allowed to be a multiple of 4.
                     gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, 0);
                     gl.vertexAttribPointer(locations.customAttributes, 2, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, 2 * 4);
 
-                    var prevNodeIndex = 0;
-
-
-                    for (i = 1; i<= countvec4; i++){
-                         gl.vertexAttribPointer(locations.customAttributes + i, elementsPerVec[i-1], gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4 + prevNodeIndex) * 4);
-                         //gl.vertexAttribPointer(locations.customAttributes + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
-                         prevNodeIndex += elementsPerVec[i-1];
-                     }
-                    
-                    //gl.vertexAttribPointer(locations.dados, 3, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, 5 * 4);
-                    gl.finish();
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
                 },
 
