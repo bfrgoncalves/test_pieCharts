@@ -36,14 +36,14 @@
 
             // first, tell webgl graphics we want to use custom shader
             // to render nodes:
-            var circleNode = buildCircleNodeShader(angleNumbers, totalChars);
-            graphics.setNodeProgram(circleNode);
+            //var circleNode = buildCircleNodeShader(angleNumbers, totalChars);
+            //graphics.setNodeProgram(circleNode);
 
             // second, change the node ui model, which can be understood
             // by the custom shader:
-            graphics.node(function (node) {
-                return new WebglCircle(nodeSize, nodeColor, dataToUse, colorToUse, null);
-             });
+            //graphics.node(function (node) {
+              //  return new WebglCircle(nodeSize, nodeColor, dataToUse, colorToUse, null);
+             //});
 
             var renderer = Viva.Graph.View.renderer(graph, {
                     layout    : layout,
