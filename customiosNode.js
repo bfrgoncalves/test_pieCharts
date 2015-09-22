@@ -1,8 +1,8 @@
 // Lets start from the easiest part - model object for node ui in webgl
-        function WebglCircle(size, color) {
-            this.size = size;
-            this.color = color;
-        }
+function WebglCircle(size, color) {
+    this.size = size;
+    this.color = color;
+}
 
 function getDataPercentage(data) {
     var arrayData = [];
@@ -105,7 +105,27 @@ function buildCircleNodeShader() {
 
                 'void main(void) {',
                 '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
-                '     gl_FragColor = color;',
+
+                        'if (gl_PointCoord.y <= 0.5 && gl_PointCoord.x <= 0.5){',
+
+                            'gl_FragColor = vec4(1,0,0,1);',
+
+                        '}',
+
+                        'else if (gl_PointCoord.y < 0.5 && gl_PointCoord.x > 0.5){',
+
+                            'gl_FragColor = vec4(0,1,0,1);',
+                        '}',
+
+                       'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x >= 0.5){',
+
+                            'gl_FragColor = vec4(0,0,1,1);',
+                        '}',
+
+                        'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x <= 0.5){',
+
+                            'gl_FragColor = vec4(0,1,1,1);',
+                       '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0);',
                 '   }',
