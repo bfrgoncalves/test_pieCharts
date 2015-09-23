@@ -137,7 +137,7 @@ function buildCircleNodeShader() {
                 // Pack clor and size into vector. First elemnt is color, second - size.
                 // Since it's floating point we can only use 24 bit to pack colors...
                 // thus alpha channel is dropped, and is always assumed to be 1.
-                'attribute vec2 a_customAttributes;',
+                'attribute float a_customAttributes;',
                 'attribute float a_colors;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
@@ -145,7 +145,7 @@ function buildCircleNodeShader() {
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
-                '   gl_PointSize = a_customAttributes[1] * u_transform[0][0];',
+                '   gl_PointSize = a_customAttributes * u_transform[0][0];',
                 '   colors = a_colors;',
                 '}'].join('\n');
 
@@ -198,9 +198,9 @@ function buildCircleNodeShader() {
                     var idx = nodeUI.id;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = nodeUI.color;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = nodeUI.size;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = color1;
+                    //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = nodeUI.color;
+                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = nodeUI.size;
+                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = color1;
                     //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = color2;
                     //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = color3;
                     //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 7] = color4;
@@ -223,8 +223,8 @@ function buildCircleNodeShader() {
                     }
 
                     gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.customAttributes, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.colors, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)*Float32Array.BYTES_PER_ELEMENT, 4*4);
+                    gl.vertexAttribPointer(locations.customAttributes, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    gl.vertexAttribPointer(locations.colors, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)*Float32Array.BYTES_PER_ELEMENT, 3*4);
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
                 },
