@@ -101,7 +101,7 @@ function buildCircleNodeShader() {
             var ATTRIBUTES_PER_PRIMITIVE = 6,
                 nodesFS = [
                 'precision mediump float;',
-                'varying vec4 colors;',
+                'varying vec2 colors;',
 
 
                 'void main(void) {',
@@ -136,10 +136,10 @@ function buildCircleNodeShader() {
                 // Since it's floating point we can only use 24 bit to pack colors...
                 // thus alpha channel is dropped, and is always assumed to be 1.
                 'attribute vec2 a_customAttributes;',
-                'attribute vec4 a_colors;',
+                'attribute vec2 a_colors;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
-                'varying vec4 colors;',
+                'varying vec2 colors;',
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
