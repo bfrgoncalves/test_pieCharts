@@ -310,8 +310,6 @@ function buildCircleNodeShader() {
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
                 '   gl_PointSize = u_size * u_transform[0][0];',
 
-                '   vec4 colorToUse;',
-
                 '   color1 = unpackColor(a_firstColor);',
                 '   color2 = unpackColor(a_secondColor);',
                 '   color3 = unpackColor(a_thirdColor);',
@@ -446,6 +444,8 @@ function buildCircleNodeShader() {
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
 
+                    buffer = gl.createBuffer();
+
                     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
                     gl.bufferData(gl.ARRAY_BUFFER, nodes2, gl.DYNAMIC_DRAW);
 
@@ -466,6 +466,8 @@ function buildCircleNodeShader() {
                      }
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
+
+                    buffer = gl.createBuffer();
 
                     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
                     gl.bufferData(gl.ARRAY_BUFFER, nodes3, gl.DYNAMIC_DRAW);
@@ -488,6 +490,8 @@ function buildCircleNodeShader() {
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
 
+                    buffer = gl.createBuffer();
+
                     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
                     gl.bufferData(gl.ARRAY_BUFFER, nodes4, gl.DYNAMIC_DRAW);
 
@@ -508,6 +512,8 @@ function buildCircleNodeShader() {
                      }
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
+
+                    buffer = gl.createBuffer();
                 },
 
                 /**
