@@ -107,7 +107,7 @@ function buildCircleNodeShader() {
                 'varying vec4 color1;',
                 'varying vec4 color2;',
                 'varying vec4 color3;',
-                //'varying vec4 color4;',
+                'varying vec4 color4;',
 
 
                 'void main(){',
@@ -129,7 +129,7 @@ function buildCircleNodeShader() {
                         'prevAngle = radians(0.0);',
                         'totalAngles = 0.0;',
 
-                        'for(int i = 0; i<3;i++){',
+                        'for(int i = 0; i<4;i++){',
                             'totalAngles = totalAngles + parts[i];',
                             'if (totalAngles <= 90.0){',
                                 'AngleToUse = parts[i];',
@@ -142,14 +142,14 @@ function buildCircleNodeShader() {
                                 'if (i==0) gl_FragColor = color1;',
                                 'else if (i==1) gl_FragColor = color2;',
                                 'else if (i==2) gl_FragColor = color3;',
-                                //'else if (i==3) gl_FragColor = color4;',
+                                'else if (i==3) gl_FragColor = color4;',
                                 'found = true;',
                             '}',
                             'else if ((tan(rad + prevAngle) >= (gl_PointCoord.y - 0.5) / (gl_PointCoord.x - 0.5)) && (tan(prevAngle) <= (gl_PointCoord.y - 0.5) / (gl_PointCoord.x - 0.5))){',
                                     'if (i==0) gl_FragColor = color1;',
                                     'else if (i==1) gl_FragColor = color2;',
                                     'else if (i==2) gl_FragColor = color3;',
-                                    //'else if (i==3) gl_FragColor = color4;',
+                                    'else if (i==3) gl_FragColor = color4;',
                                     'found = true;',
                             '}',
                             'prevAngle = prevAngle + rad;',
@@ -162,7 +162,7 @@ function buildCircleNodeShader() {
                         'prevAngle = radians(0.0);',
                         'totalAngles = 90.0;',
 
-                        'for(int i = 0; i<3;i++){',
+                        'for(int i = 0; i<4;i++){',
                             'totalAngles = totalAngles + parts[i];',
                             'if (totalAngles > 90.0 && totalAngles <= 180.0){',
                                 'AngleToUse = parts[i];',
@@ -175,14 +175,14 @@ function buildCircleNodeShader() {
                                 'if (i==0) gl_FragColor = color1;',
                                 'else if (i==1) gl_FragColor = color2;',
                                 'else if (i==2) gl_FragColor = color3;',
-                                //'else if (i==3) gl_FragColor = color4;',
+                                'else if (i==3) gl_FragColor = color4;',
                                 'found = true;',
                             '}',
                             'else if (tan(rad + prevAngle) >= (- 2.0 * ( 0.5 - gl_PointCoord.x)) / (- 2.0 * (gl_PointCoord.y - 0.5)) && tan(prevAngle) <= (- 2.0 * ( 0.5 - gl_PointCoord.x)) / (- 2.0 * (gl_PointCoord.y - 0.5)) ){',
                                     'if (i==0) gl_FragColor = color1;',
                                     'else if (i==1) gl_FragColor = color2;',
                                     'else if (i==2) gl_FragColor = color3;',
-                                    //'else if (i==3) gl_FragColor = color4;',
+                                    'else if (i==3) gl_FragColor = color4;',
                                     'found = true;',
                             '}',
                             'prevAngle = prevAngle + rad;',
@@ -194,7 +194,7 @@ function buildCircleNodeShader() {
                         'prevAngle = radians(0.0);',
                         'totalAngles = 180.0;',
 
-                        'for(int i = 0; i<3;i++){',
+                        'for(int i = 0; i<4;i++){',
                             'totalAngles = totalAngles + parts[i];',
                             'if (totalAngles > 180.0 && totalAngles <= 270.0){',
                                 'AngleToUse = parts[i];',
@@ -207,14 +207,14 @@ function buildCircleNodeShader() {
                                 'if (i==0) gl_FragColor = color1;',
                                 'else if (i==1) gl_FragColor = color2;',
                                 'else if (i==2) gl_FragColor = color3;',
-                                //'else if (i==3) gl_FragColor = color4;',
+                                'else if (i==3) gl_FragColor = color4;',
                                 'found = true;',
                             '}',
                             'else if (tan(rad + prevAngle) >= (- 2.0 * ( 0.5 - gl_PointCoord.y)) / (- 2.0 * ( 0.5 - gl_PointCoord.x)) && tan(prevAngle) <= (- 2.0 * ( 0.5 - gl_PointCoord.y)) / (- 2.0 * ( 0.5 - gl_PointCoord.x)) ){',
                                     'if (i==0) gl_FragColor = color1;',
                                     'else if (i==1) gl_FragColor = color2;',
                                     'else if (i==2) gl_FragColor = color3;',
-                                    //'else if (i==3) gl_FragColor = color4;',
+                                    'else if (i==3) gl_FragColor = color4;',
                                     'found = true;',
                             '}',
                             'prevAngle = prevAngle + rad;',
@@ -226,7 +226,7 @@ function buildCircleNodeShader() {
                         'prevAngle = radians(0.0);',
                         'totalAngles = 270.0;',
 
-                        'for(int i = 0; i<3;i++){',
+                        'for(int i = 0; i<4;i++){',
 
                             'totalAngles = totalAngles + parts[i];',
                             'if (totalAngles > 270.0 && totalAngles <= 360.0){',
@@ -240,7 +240,7 @@ function buildCircleNodeShader() {
                                 'if (i==0) gl_FragColor = color1;',
                                 'else if (i==1) gl_FragColor = color2;',
                                 'else if (i==2) gl_FragColor = color3;',
-                                //'else if (i==3) gl_FragColor = color4;',
+                                'else if (i==3) gl_FragColor = color4;',
                                 'found = true;',
                             '}',
                             'else if(AngleToUse == 0.0){',
@@ -251,7 +251,7 @@ function buildCircleNodeShader() {
                                     'if (i==0) gl_FragColor = color1;',
                                     'else if (i==1) gl_FragColor = color2;',
                                     'else if (i==2) gl_FragColor = color3;',
-                                    //'else if (i==3) gl_FragColor = color4;',
+                                    'else if (i==3) gl_FragColor = color4;',
                                     'found = true;',
                             '}',
                             'prevAngle = prevAngle + rad;',
@@ -283,7 +283,7 @@ function buildCircleNodeShader() {
                 'attribute float a_firstColor;',
                 'attribute float a_secondColor;',
                 'attribute float a_thirdColor;',
-                //'attribute float a_fourthColor;',
+                'attribute float a_fourthColor;',
                 //'attribute float a_angle;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
@@ -292,7 +292,7 @@ function buildCircleNodeShader() {
                 'varying vec4 color1;',
                 'varying vec4 color2;',
                 'varying vec4 color3;',
-                //'varying vec4 color4;',
+                'varying vec4 color4;',
 
                 'varying float quadrant;',
 
@@ -315,7 +315,7 @@ function buildCircleNodeShader() {
                 '   color1 = unpackColor(a_firstColor);',
                 '   color2 = unpackColor(a_secondColor);',
                 '   color3 = unpackColor(a_thirdColor);',
-                //'   color4 = unpackColor(a_fourthColor);',
+                '   color4 = unpackColor(a_fourthColor);',
                  //'   angle = a_angle;',
                  //'   prevAngle = radians(a_customAttributes[3]);',
                 '   quadrant = a_quadrant;',
@@ -351,7 +351,7 @@ function buildCircleNodeShader() {
                     gl.enableVertexAttribArray(locations.quadrant);
                     //gl.enableVertexAttribArray(locations.angle);
 
-                    for (o = 1; o <= 3; o++){
+                    for (o = 1; o <= 4; o++){
                          gl.enableVertexAttribArray(locations.quadrant + o);
                     }
 
@@ -439,7 +439,7 @@ function buildCircleNodeShader() {
                     gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
                     //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 3; i++){
+                    for (i = 1; i<= 4; i++){
                          gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
                          //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
                      }
@@ -460,7 +460,7 @@ function buildCircleNodeShader() {
                     gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
                     //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 3; i++){
+                    for (i = 1; i<= 4; i++){
                          gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
                          //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
                      }
@@ -481,7 +481,7 @@ function buildCircleNodeShader() {
                     gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
                     //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 3; i++){
+                    for (i = 1; i<= 4; i++){
                          gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
                          //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
                      }
@@ -502,7 +502,7 @@ function buildCircleNodeShader() {
                     gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
                     //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 3; i++){
+                    for (i = 1; i<= 4; i++){
                          gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
                          //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
                      }
