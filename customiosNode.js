@@ -104,32 +104,36 @@ function buildCircleNodeShader() {
                 'varying vec2 colors;',
 
 
+
+                    'vec3 unpackColor(float f) {',
+                        'vec3 color;',
+                        'color.b = floor(f / 256.0 / 256.0);',
+                        'color.g = floor((f - color.b * 256.0 * 256.0) / 256.0);',
+                        'color.r = floor(f - color.b * 256.0 * 256.0 - color.g * 256.0);',
+                        // now we have a vec3 with the 3 components in range [0..256]. Let's normalize it!
+                        'return color / 256.0;',
+                    '}',
+
                 'void main(void) {',
-                    'float x = colors[0];',
 
                 '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
 
                         'if (gl_PointCoord.y <= 0.5){',
 
-                            'vec4 colorToUse;',
+                            'vec3 c = unpackColor(colors[0]);',
 
-                            'float c = colors[0];',
-                         '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
-                         '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
-                         '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 256.0;',
-                         '   colorToUse.a = 1.0;',
-
-                            'gl_FragColor = vec4(colorToUse.r, colorToUse.g,colorToUse.b, 1.0);',
+                            'gl_FragColor = vec4(c.r,c.g,c.b,1.0);',
 
                         '}',
                         'else{',
 
-                            'gl_FragColor = vec4(1.0,0.0,0.0,1.0);',
+                            'gl_FragColor = vec4(0.0,1.0,0.0,1.0);',
                        '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0.0);',
                 '   }',
                 '}'].join('\n'),
+
                 nodesVS = [
                 'attribute vec2 a_vertexPos;',
                 // Pack clor and size into vector. First elemnt is color, second - size.
