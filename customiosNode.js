@@ -101,16 +101,8 @@ function buildCircleNodeShader() {
             var ATTRIBUTES_PER_PRIMITIVE = 6,
                 nodesFS = [
                 'precision mediump float;',
-                'varying float colors;',
+                'varying vec4 colors;',
 
-                'vec3 unpackColor(float f) {',
-                    'vec3 color;',
-                    'color.b = floor(f / 256.0 / 256.0);',
-                    'color.g = floor((f - color.b * 256.0 * 256.0) / 256.0);',
-                    'color.r = floor(f - color.b * 256.0 * 256.0 - color.g * 256.0);',
-                    // now we have a vec3 with the 3 components in range [0..256]. Let's normalize it!
-                    'return color / 256.0;',
-                '}',
 
                 'void main(void) {',
 
@@ -118,14 +110,13 @@ function buildCircleNodeShader() {
 
                         'if (gl_PointCoord.y <= 0.5){',
 
-                            'vec3 c = unpackColor(colors);',
 
-                            'gl_FragColor = vec4(c.r,c.g,c.b,1.0);',
+                            'gl_FragColor = colors;',
 
                         '}',
                         'else{',
 
-                            'gl_FragColor = vec4(1.0,0.0,0.0,1.0);',
+                            'gl_FragColor = vec4(0.0,0.0,1.0,1.0);',
                        '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0.0);',
@@ -141,12 +132,20 @@ function buildCircleNodeShader() {
                 'attribute float a_colors;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
-                'varying float colors;',
+                'varying vec4 colors;',
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
                 '   gl_PointSize = a_customAttributes * u_transform[0][0];',
-                '   colors = a_colors;',
+
+                '   vec4 colorToUse;',
+
+                    'float c = a_colors;',
+                 '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
+                 '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
+                 '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
+                 '   colorToUse.a = 1.0;',
+                 '   colors = colorToUse;',
                 '}'].join('\n');
 
             var program,
