@@ -107,16 +107,17 @@ function buildCircleNodeShader() {
                     'vec4 colorToUse;',
 
                     'float c = col;',
-                 '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
-                 '   colorToUse.a = 1.0;',
+                 '   colorToUse[2] = mod(c, 256.0); c = floor(c/256.0);',
+                 '   colorToUse[1] = mod(c, 256.0); c = floor(c/256.0);',
+                 '   colorToUse[0] = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
+                 //'   colorToUse.a = 1.0;',
 
                  'return colorToUse;',
 
                 '}',
 
                 'void main(void) {',
+                    'float x = colors[0];',
 
                 '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
 
