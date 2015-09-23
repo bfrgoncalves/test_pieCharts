@@ -125,12 +125,10 @@ function buildCircleNodeShader() {
                             'gl_FragColor = getColor(colors[0]);',
 
                         '}',
+                        'else{',
 
-                       'else if (gl_PointCoord.y > 0.5 ){',
-
-                            'gl_FragColor = getColor(colors[1]);',
-                        '}',
-
+                            'gl_FragColor = vec4(1,0,0,1);',
+                       '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0);',
                 '   }',
