@@ -120,26 +120,17 @@ function buildCircleNodeShader() {
 
                 '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
 
-                        'if (gl_PointCoord.y <= 0.5 && gl_PointCoord.x <= 0.5){',
+                        'if (gl_PointCoord.y <= 0.5){',
 
                             'gl_FragColor = getColor(colors[0]);',
 
                         '}',
 
-                        'else if (gl_PointCoord.y < 0.5 && gl_PointCoord.x > 0.5){',
+                       'else if (gl_PointCoord.y > 0.5 ){',
 
                             'gl_FragColor = getColor(colors[1]);',
                         '}',
 
-                       'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x >= 0.5){',
-
-                            'gl_FragColor = getColor(colors[0]);',
-                        '}',
-
-                        'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x <= 0.5){',
-
-                            'gl_FragColor = getColor(colors[1]);',
-                       '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0);',
                 '   }',
