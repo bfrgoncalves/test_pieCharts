@@ -116,7 +116,7 @@ function buildCircleNodeShader() {
                             'float c = colors[0];',
                          '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
                          '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
-                         '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
+                         '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 256.0;',
                          '   colorToUse.a = 1.0;',
 
                             'gl_FragColor = colorToUse;',
@@ -124,10 +124,10 @@ function buildCircleNodeShader() {
                         '}',
                         'else{',
 
-                            'gl_FragColor = vec4(1,0,0,1);',
+                            'gl_FragColor = vec4(1.0,0.0,0.0,1.0);',
                        '}',
                 '   } else {',
-                '     gl_FragColor = vec4(0);',
+                '     gl_FragColor = vec4(0.0);',
                 '   }',
                 '}'].join('\n'),
                 nodesVS = [
