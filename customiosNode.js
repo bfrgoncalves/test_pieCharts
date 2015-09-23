@@ -406,7 +406,7 @@ function buildCircleNodeShader() {
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[3]; //quadrant
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[3]; //quadrant
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
-                    //
+                    ////
                     
 
                     if(firstTime) {
