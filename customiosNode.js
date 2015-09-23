@@ -381,12 +381,12 @@ function buildCircleNodeShader() {
                     nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
                     nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[0]; //quadrant
                     nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[0]; //quadrant
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[0]; //quadrant
+                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[1]; //quadrant
 
                     nodes2[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
                     nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
                     nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 2; //quadrant
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
+                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[1]; //quadrant
                     nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
                     nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[1]; //quadrant
                     nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[1]; //quadrant
@@ -395,14 +395,14 @@ function buildCircleNodeShader() {
                     nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
                     nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 3; //quadrant
                     nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[1]; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
+                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[2]; //quadrant
                     nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[2]; //quadrant
+                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
 
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 4; //quadrant
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[2]; //quadrant
+                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[3]; //quadrant
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[3]; //quadrant
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[3]; //quadrant
                     nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
