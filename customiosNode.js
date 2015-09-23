@@ -103,18 +103,6 @@ function buildCircleNodeShader() {
                 'precision mediump float;',
                 'varying vec4 colors;',
 
-               'vec4 getColor(float col){',
-                    'vec4 colorToUse;',
-
-                    'float c = col;',
-                 '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
-                 '   colorToUse.a = 1.0;',
-
-                 'return colorToUse;',
-
-                '}',
 
                 'void main(void) {',
                     'float x = colors[0];',
@@ -122,7 +110,14 @@ function buildCircleNodeShader() {
                 '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
 
                         'if (gl_PointCoord.y <= 0.5){',
-                            'vec4 colorToUse = getColor(colors[0]);',
+
+                            'vec4 colorToUse;',
+
+                            'float c = colors[0];',
+                         '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
+                         '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
+                         '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
+                         '   colorToUse.a = 1.0;',
 
                             'gl_FragColor = colorToUse;',
 
