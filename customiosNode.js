@@ -98,10 +98,23 @@ function assignQuadrant(dataInPercentage, colorIndexes){
 
 function buildCircleNodeShader() {
             // For each primitive we need 4 attributes: x, y, color and size.
-            var ATTRIBUTES_PER_PRIMITIVE = 5,
+            var ATTRIBUTES_PER_PRIMITIVE = 8,
                 nodesFS = [
                 'precision mediump float;',
-                'varying vec4 color;',
+                'varying vec4 colors;',
+
+               'vec4 getColor(float col){',
+                    'vec4 colorToUse;',
+
+                    'float c = col;',
+                 '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
+                 '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
+                 '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
+                 '   colorToUse.a = 1.0;',
+
+                 'return colorToUse;',
+
+                '}',
 
                 'void main(void) {',
 
@@ -109,23 +122,23 @@ function buildCircleNodeShader() {
 
                         'if (gl_PointCoord.y <= 0.5 && gl_PointCoord.x <= 0.5){',
 
-                            'gl_FragColor = color;',
+                            'gl_FragColor = getColor(colors[0]);',
 
                         '}',
 
                         'else if (gl_PointCoord.y < 0.5 && gl_PointCoord.x > 0.5){',
 
-                            'gl_FragColor = color;',
+                            'gl_FragColor = getColor(colors[1]);',
                         '}',
 
                        'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x >= 0.5){',
 
-                            'gl_FragColor = color;',
+                            'gl_FragColor = getColor(colors[2]);',
                         '}',
 
                         'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x <= 0.5){',
 
-                            'gl_FragColor = color;',
+                            'gl_FragColor = getColor(colors[3]);',
                        '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0);',
@@ -137,19 +150,15 @@ function buildCircleNodeShader() {
                 // Since it's floating point we can only use 24 bit to pack colors...
                 // thus alpha channel is dropped, and is always assumed to be 1.
                 'attribute vec2 a_customAttributes;',
-                'attribute float a_colors;',
+                'attribute vec4 a_colors;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
-                'varying vec4 color;',
+                'varying vec4 colors;',
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
                 '   gl_PointSize = a_customAttributes[1] * u_transform[0][0];',
-                '   float c = a_colors;',
-                '   color.b = mod(c, 256.0); c = floor(c/256.0);',
-                '   color.g = mod(c, 256.0); c = floor(c/256.0);',
-                '   color.r = mod(c, 256.0); c = floor(c/256.0); color /= 255.0;',
-                '   color.a = 1.0;',
+                '   colors = a_colors;',
                 '}'].join('\n');
 
             var program,
@@ -159,7 +168,7 @@ function buildCircleNodeShader() {
                 utils,
                 nodes = new Float32Array(),
                 nodesCount = 0,
-                canvasWidth, canvasHeight, transform,
+                canvasWidth, canvasHeight, transform, color1, color2,color3,color4,
                 isCanvasDirty;
 
             return {
@@ -184,6 +193,11 @@ function buildCircleNodeShader() {
                     buffer = gl.createBuffer();
 
                     console.log('0x'+Math.floor(Math.random()*16777215).toString(16));
+
+                    color1='0x'+Math.floor(Math.random()*16777215).toString(16);
+                    color2='0x'+Math.floor(Math.random()*16777215).toString(16);
+                    color3='0x'+Math.floor(Math.random()*16777215).toString(16);
+                    color4= '0x'+Math.floor(Math.random()*16777215).toString(16);
                 },
 
                 /**
@@ -198,7 +212,10 @@ function buildCircleNodeShader() {
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = nodeUI.color;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = nodeUI.size;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = '0x'+Math.floor(Math.random()*16777215).toString(16);
+                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = color1;
+                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = color2;
+                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = color3;
+                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 7] = color4;
 
                 },
 
@@ -219,7 +236,7 @@ function buildCircleNodeShader() {
 
                     gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
                     gl.vertexAttribPointer(locations.customAttributes, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.colors, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)*Float32Array.BYTES_PER_ELEMENT, 4*4);
+                    gl.vertexAttribPointer(locations.colors, 4, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)*Float32Array.BYTES_PER_ELEMENT, 4*4);
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
                 },
