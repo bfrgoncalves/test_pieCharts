@@ -201,7 +201,7 @@ function buildCircleNodeShader() {
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = nodeUI.color;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = nodeUI.size;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = color1;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = color2;
+                    //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = color2;
                     //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = color3;
                     //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 7] = color4;
 
