@@ -101,17 +101,25 @@ function buildCircleNodeShader() {
             var ATTRIBUTES_PER_PRIMITIVE = 6,
                 nodesFS = [
                 'precision mediump float;',
-                'varying vec4 colors;',
+                'varying float c;',
 
 
                 'void main(void) {',
+
 
                 '   if ((gl_PointCoord.x - 0.5) * (gl_PointCoord.x - 0.5) + (gl_PointCoord.y - 0.5) * (gl_PointCoord.y - 0.5) < 0.25) {',
 
                         'if (gl_PointCoord.y <= 0.5){',
 
+                            'vec4 colorToUse;',
+                            'float x = c;',
 
-                            'gl_FragColor = colors;',
+                            '   colorToUse.b = mod(x, 256.0); x = floor(x/256.0);',
+                             '   colorToUse.g = mod(x, 256.0); x = floor(x/256.0);',
+                             '   colorToUse.r = mod(x, 256.0); x = floor(x/256.0); colorToUse /= 255.0;',
+                             '   colorToUse.a = 1.0;',
+
+                            'gl_FragColor = colorToUse;',
 
                         '}',
                         'else{',
@@ -132,20 +140,13 @@ function buildCircleNodeShader() {
                 'attribute float a_colors;',
                 'uniform vec2 u_screenSize;',
                 'uniform mat4 u_transform;',
-                'varying vec4 colors;',
+                'varying float c;',
 
                 'void main(void) {',
                 '   gl_Position = u_transform * vec4(a_vertexPos/u_screenSize, 0, 1);',
                 '   gl_PointSize = a_customAttributes * u_transform[0][0];',
 
-                '   vec4 colorToUse;',
-
-                    'float c = a_colors;',
-                 '   colorToUse.b = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.g = mod(c, 256.0); c = floor(c/256.0);',
-                 '   colorToUse.r = mod(c, 256.0); c = floor(c/256.0); colorToUse /= 255.0;',
-                 '   colorToUse.a = 1.0;',
-                 '   colors = colorToUse;',
+                '   c = a_colors;',
                 '}'].join('\n');
 
             var program,
