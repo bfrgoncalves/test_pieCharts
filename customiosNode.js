@@ -98,7 +98,7 @@ function assignQuadrant(dataInPercentage, colorIndexes){
 
 function buildCircleNodeShader() {
             // For each primitive we need 4 attributes: x, y, color and size.
-            var ATTRIBUTES_PER_PRIMITIVE = 8,
+            var ATTRIBUTES_PER_PRIMITIVE = 6,
                 nodesFS = [
                 'precision mediump float;',
                 'varying vec4 colors;',
@@ -133,12 +133,12 @@ function buildCircleNodeShader() {
 
                        'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x >= 0.5){',
 
-                            'gl_FragColor = getColor(colors[2]);',
+                            'gl_FragColor = getColor(colors[0]);',
                         '}',
 
                         'else if (gl_PointCoord.y >= 0.5 && gl_PointCoord.x <= 0.5){',
 
-                            'gl_FragColor = getColor(colors[3]);',
+                            'gl_FragColor = getColor(colors[1]);',
                        '}',
                 '   } else {',
                 '     gl_FragColor = vec4(0);',
@@ -214,8 +214,8 @@ function buildCircleNodeShader() {
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = nodeUI.size;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = color1;
                     nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = color2;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = color3;
-                    nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 7] = color4;
+                    //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = color3;
+                    //nodes[idx * ATTRIBUTES_PER_PRIMITIVE + 7] = color4;
 
                 },
 
@@ -236,7 +236,7 @@ function buildCircleNodeShader() {
 
                     gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
                     gl.vertexAttribPointer(locations.customAttributes, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.colors, 4, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)*Float32Array.BYTES_PER_ELEMENT, 4*4);
+                    gl.vertexAttribPointer(locations.colors, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)*Float32Array.BYTES_PER_ELEMENT, 4*4);
 
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
                 },
