@@ -349,9 +349,9 @@ function buildCircleNodeShader() {
                 allNodes3 = [],
                 allNodes4 = [],
                 nodes1 = new Float32Array(7),
-                nodes2 = new Float32Array(),
-                nodes3 = new Float32Array(),
-                nodes4 = new Float32Array(),
+                nodes2 = new Float32Array(7),
+                nodes3 = new Float32Array(7),
+                nodes4 = new Float32Array(7),
                 nodesCount = 0,
                 canvasWidth, canvasHeight, transform, color1, color2,color3,color4, firstTime = true,
                 isCanvasDirty;
@@ -402,6 +402,9 @@ function buildCircleNodeShader() {
 
                     var allFirstQuadrant = [];
                     allNodes1[idx] = [];
+                    allNodes2[idx] = [];
+                    allNodes3[idx] = [];
+                    allNodes4[idx] = [];
 
                     
                     for (i = 0; i < numberOfAngles; i++){
@@ -413,13 +416,70 @@ function buildCircleNodeShader() {
                         nodes1[1] = pos.y;
                         nodes1[2] = 1; //quadrant
                         nodes1[3] = angleToUse[i]; //angle
-                        nodes1[4] = colors[0]; //color
+                        nodes1[4] = colors[i]; //color
                         nodes1[5] = Math.radians(prevAngles[i]); //prevAngle
                         nodes1[6] = currentTotal; //total Angles
 
                         for (j=0;j<nodes1.length;j++) interNode[j] = nodes1[j];
 
                         allNodes1[idx].push(interNode);
+
+                    }
+
+                    for (i = 0; i < numberOfAngles; i++){
+                        var interNode = new Float32Array(7);
+                        
+                        currentTotal += angleToUse[i];
+                        
+                        nodes2[0] = pos.x;
+                        nodes2[1] = pos.y;
+                        nodes2[2] = 2; //quadrant
+                        nodes2[3] = angleToUse[i]; //angle
+                        nodes2[4] = colors[i]; //color
+                        nodes2[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes2[6] = currentTotal; //total Angles
+
+                        for (j=0;j<nodes2.length;j++) interNode[j] = nodes2[j];
+
+                        allNodes2[idx].push(interNode);
+
+                    }
+
+                    for (i = 0; i < numberOfAngles; i++){
+                        var interNode = new Float32Array(7);
+                        
+                        currentTotal += angleToUse[i];
+                        
+                        nodes3[0] = pos.x;
+                        nodes3[1] = pos.y;
+                        nodes3[2] = 3; //quadrant
+                        nodes3[3] = angleToUse[i]; //angle
+                        nodes3[4] = colors[i]; //color
+                        nodes3[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes3[6] = currentTotal; //total Angles
+
+                        for (j=0;j<nodes3.length;j++) interNode[j] = nodes3[j];
+
+                        allNodes3[idx].push(interNode);
+
+                    }
+
+                    for (i = 0; i < numberOfAngles; i++){
+                        var interNode = new Float32Array(7);
+                        
+                        currentTotal += angleToUse[i];
+                        
+                        nodes4[0] = pos.x;
+                        nodes4[1] = pos.y;
+                        nodes4[2] = 4; //quadrant
+                        nodes4[3] = angleToUse[i]; //angle
+                        nodes4[4] = colors[i]; //color
+                        nodes4[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes4[6] = currentTotal; //total Angles
+
+                        for (j=0;j<nodes1.length;j++) interNode[j] = nodes4[j];
+
+                        allNodes4[idx].push(interNode);
 
                     }
 
@@ -458,14 +518,15 @@ function buildCircleNodeShader() {
                     gl.useProgram(program);
                     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
+                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    gl.vertexAttribPointer(locations.anglesAndColor, 3, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
+                    gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+
                     for (i=0; i<allNodes1.length;i++){
 
                         for(j=0;j<allNodes1[i].length;j++){
                             
-                            if(firstTime) {
-                                console.log(allNodes1[i][j]);
-                                firstTime =false;
-                            }
                             gl.bufferData(gl.ARRAY_BUFFER, allNodes1[i][j], gl.DYNAMIC_DRAW);
 
                             if (isCanvasDirty) {
@@ -475,10 +536,71 @@ function buildCircleNodeShader() {
                                 gl.uniform1f(locations.size, 24.0);
                             }
 
-                            gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                            gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                            gl.vertexAttribPointer(locations.anglesAndColor, 3, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
-                            gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+
+                            gl.drawArrays(gl.POINTS, 0, 1);
+                        }
+                    }
+
+                    for (i=0; i<allNodes2.length;i++){
+
+                        for(j=0;j<allNodes2[i].length;j++){
+                            
+                            if(firstTime) {
+                                console.log(allNodes2[i][j]);
+                                firstTime =false;
+                            }
+                            gl.bufferData(gl.ARRAY_BUFFER, allNodes2[i][j], gl.DYNAMIC_DRAW);
+
+                            if (isCanvasDirty) {
+                                isCanvasDirty = false;
+                                gl.uniformMatrix4fv(locations.transform, false, transform);
+                                gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                                gl.uniform1f(locations.size, 24.0);
+                            }
+
+
+                            gl.drawArrays(gl.POINTS, 0, 1);
+                        }
+                    }
+                    
+                    for (i=0; i<allNodes3.length;i++){
+
+                        for(j=0;j<allNodes3[i].length;j++){
+                            
+                            if(firstTime) {
+                                console.log(allNodes3[i][j]);
+                                firstTime =false;
+                            }
+                            gl.bufferData(gl.ARRAY_BUFFER, allNodes3[i][j], gl.DYNAMIC_DRAW);
+
+                            if (isCanvasDirty) {
+                                isCanvasDirty = false;
+                                gl.uniformMatrix4fv(locations.transform, false, transform);
+                                gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                                gl.uniform1f(locations.size, 24.0);
+                            }
+
+
+                            gl.drawArrays(gl.POINTS, 0, 1);
+                        }
+                    }
+
+                    for (i=0; i<allNodes4.length;i++){
+
+                        for(j=0;j<allNodes4[i].length;j++){
+                            
+                            if(firstTime) {
+                                console.log(allNodes4[i][j]);
+                                firstTime =false;
+                            }
+                            gl.bufferData(gl.ARRAY_BUFFER, allNodes4[i][j], gl.DYNAMIC_DRAW);
+
+                            if (isCanvasDirty) {
+                                isCanvasDirty = false;
+                                gl.uniformMatrix4fv(locations.transform, false, transform);
+                                gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                                gl.uniform1f(locations.size, 24.0);
+                            }
 
 
                             gl.drawArrays(gl.POINTS, 0, 1);
@@ -563,6 +685,9 @@ function buildCircleNodeShader() {
                     // nodes4 = webglUtils.extendArray(nodes4, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
                     nodesCount += 1;
                     allNodes1 = new Array(nodesCount);
+                    allNodes2 = new Array(nodesCount);
+                    allNodes3 = new Array(nodesCount);
+                    allNodes4 = new Array(nodesCount);
                 },
 
                 /**
