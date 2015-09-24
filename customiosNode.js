@@ -395,12 +395,12 @@ function buildCircleNodeShader() {
                  */
                 position : function (nodeUI, pos) {
                     var idx = nodeUI.id;
-                    var numberOfAngles = 2;
-                    var angleToUse = [30, 60];
-                    var prevAngles = [0, 30];
+                    var numberOfAngles = 3;
+                    var angleToUse = [25, 25, 40];
+                    //var prevAngles = [0, 25];
                     var currentTotal = 0;
+                    var prevAngles = 0.0;
 
-                    var allFirstQuadrant = [];
                     allNodes1[idx] = [];
                     allNodes2[idx] = [];
                     allNodes3[idx] = [];
@@ -411,13 +411,16 @@ function buildCircleNodeShader() {
                         var interNode = new Float32Array(7);
                         
                         currentTotal += angleToUse[i];
+
+                        if (i==0) prevAngles = 0;
+                        else prevAngles += angleToUse[i-1];
                         
                         nodes1[0] = pos.x;
                         nodes1[1] = pos.y;
                         nodes1[2] = 1; //quadrant
                         nodes1[3] = angleToUse[i]; //angle
                         nodes1[4] = colors[i]; //color
-                        nodes1[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes1[5] = Math.radians(prevAngles); //prevAngle
                         nodes1[6] = currentTotal; //total Angles
 
                         for (j=0;j<nodes1.length;j++) interNode[j] = nodes1[j];
@@ -430,13 +433,16 @@ function buildCircleNodeShader() {
                         var interNode = new Float32Array(7);
                         
                         currentTotal += angleToUse[i];
+
+                        if (i==0) prevAngles = 0;
+                        else prevAngles += angleToUse[i-1];
                         
                         nodes2[0] = pos.x;
                         nodes2[1] = pos.y;
                         nodes2[2] = 2; //quadrant
                         nodes2[3] = angleToUse[i]; //angle
                         nodes2[4] = colors[i]; //color
-                        nodes2[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes2[5] = Math.radians(prevAngles); //prevAngle
                         nodes2[6] = currentTotal; //total Angles
 
                         for (j=0;j<nodes2.length;j++) interNode[j] = nodes2[j];
@@ -449,13 +455,16 @@ function buildCircleNodeShader() {
                         var interNode = new Float32Array(7);
                         
                         currentTotal += angleToUse[i];
+
+                        if (i==0) prevAngles = 0;
+                        else prevAngles += angleToUse[i-1];
                         
                         nodes3[0] = pos.x;
                         nodes3[1] = pos.y;
                         nodes3[2] = 3; //quadrant
                         nodes3[3] = angleToUse[i]; //angle
                         nodes3[4] = colors[i]; //color
-                        nodes3[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes3[5] = Math.radians(prevAngles); //prevAngle
                         nodes3[6] = currentTotal; //total Angles
 
                         for (j=0;j<nodes3.length;j++) interNode[j] = nodes3[j];
@@ -468,13 +477,16 @@ function buildCircleNodeShader() {
                         var interNode = new Float32Array(7);
                         
                         currentTotal += angleToUse[i];
+
+                        if (i==0) prevAngles = 0;
+                        else prevAngles += angleToUse[i-1];
                         
                         nodes4[0] = pos.x;
                         nodes4[1] = pos.y;
                         nodes4[2] = 4; //quadrant
                         nodes4[3] = angleToUse[i]; //angle
                         nodes4[4] = colors[i]; //color
-                        nodes4[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes4[5] = Math.radians(prevAngles); //prevAngle
                         nodes4[6] = currentTotal; //total Angles
 
                         for (j=0;j<nodes1.length;j++) interNode[j] = nodes4[j];
