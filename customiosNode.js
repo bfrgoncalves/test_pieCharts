@@ -381,29 +381,29 @@ function buildCircleNodeShader() {
                     nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
                     nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
 
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 2; //quadrant
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 2; //quadrant
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
 
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 3; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 3; //quadrant
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
 
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 4; //quadrant
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 4; //quadrant
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = colors[0]; //quadrant
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
                     ////
                     
 
@@ -445,65 +445,65 @@ function buildCircleNodeShader() {
                     gl.drawArrays(gl.POINTS, 0, nodesCount);
 
 
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes2, gl.DYNAMIC_DRAW);
+                    // gl.bufferData(gl.ARRAY_BUFFER, nodes2, gl.DYNAMIC_DRAW);
 
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
-                    }
+                    // if (isCanvasDirty) {
+                    //     isCanvasDirty = false;
+                    //     gl.uniformMatrix4fv(locations.transform, false, transform);
+                    //     gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                    //     gl.uniform1f(locations.size, 24.0);
+                    // }
 
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+                    // gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    // gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    // //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 4; i++){
-                         gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
-                         //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
-                     }
+                    // for (i = 1; i<= 4; i++){
+                    //      gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
+                    //      //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
+                    //  }
 
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
+                    // gl.drawArrays(gl.POINTS, 0, nodesCount);
 
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes3, gl.DYNAMIC_DRAW);
+                    // gl.bufferData(gl.ARRAY_BUFFER, nodes3, gl.DYNAMIC_DRAW);
 
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
-                    }
+                    // if (isCanvasDirty) {
+                    //     isCanvasDirty = false;
+                    //     gl.uniformMatrix4fv(locations.transform, false, transform);
+                    //     gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                    //     gl.uniform1f(locations.size, 24.0);
+                    // }
 
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+                    // gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    // gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    // //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 4; i++){
-                         gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
-                         //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
-                     }
+                    // for (i = 1; i<= 4; i++){
+                    //      gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
+                    //      //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
+                    //  }
 
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
+                    // gl.drawArrays(gl.POINTS, 0, nodesCount);
 
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes4, gl.DYNAMIC_DRAW);
+                    // gl.bufferData(gl.ARRAY_BUFFER, nodes4, gl.DYNAMIC_DRAW);
 
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
-                    }
+                    // if (isCanvasDirty) {
+                    //     isCanvasDirty = false;
+                    //     gl.uniformMatrix4fv(locations.transform, false, transform);
+                    //     gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                    //     gl.uniform1f(locations.size, 24.0);
+                    // }
 
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+                    // gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    // gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    // //gl.vertexAttribPointer(locations.angle, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
 
-                    for (i = 1; i<= 4; i++){
-                         gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
-                         //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
-                     }
+                    // for (i = 1; i<= 4; i++){
+                    //      gl.vertexAttribPointer(locations.quadrant + i, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (3 + i - 1) * 4);
+                    //      //gl.vertexAttribPointer(locations.quadrant + i + 1 + prevNodeIndex, 1, gl.FLOAT, false, ATTRIBUTES_PER_PRIMITIVE * Float32Array.BYTES_PER_ELEMENT, (4+i-1 + 1 + prevNodeIndex) * 4);
+                    //  }
 
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
+                    // gl.drawArrays(gl.POINTS, 0, nodesCount);
                 },
 
                 /**
