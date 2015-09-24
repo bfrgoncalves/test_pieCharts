@@ -339,7 +339,16 @@ function buildCircleNodeShader() {
                 buffer,
                 locations,
                 utils,
-                nodes1 = new Float32Array(),
+                // allNodes1 = [];
+                // allNodes2 = [];
+                // allNodes3 = [];
+                // allNodes4 = [];
+                isfirst = true, 
+                allNodes1 = [],
+                allNodes2 = [],
+                allNodes3 = [],
+                allNodes4 = [],
+                nodes1 = new Float32Array(7),
                 nodes2 = new Float32Array(),
                 nodes3 = new Float32Array(),
                 nodes4 = new Float32Array(),
@@ -386,51 +395,58 @@ function buildCircleNodeShader() {
                  */
                 position : function (nodeUI, pos) {
                     var idx = nodeUI.id;
+                    var numberOfAngles = 2;
+                    var angleToUse = [30, 60];
+                    var prevAngles = [0, 30];
+                    var currentTotal = 0;
 
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 1; //quadrant
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 60; //angle
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[0]; //color
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(30); //prevAngle
-                    nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 90; //total Angles
-                    // nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //quadrant
-                    // nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = colors[2]; //quadrant
-                    // nodes1[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = colors[3]; //quadrant
+                    var allFirstQuadrant = [];
+                    allNodes1[idx] = [];
 
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 2; //quadrant
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 30; //angle
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //color
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(0); //prevAngle
-                    nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 90 + 30; //total Angles
-
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 3; //quadrant
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 30; //angle
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[2]; //color
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(0); //prevAngle
-                    nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 180 + 30; //total Angles
-
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 4; //quadrant
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 30; //angle
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[3]; //color
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(0); //prevAngle
-                    nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 270 + 30; //total Angles
-                    ////
                     
+                    for (i = 0; i < numberOfAngles; i++){
+                        var interNode = new Float32Array(7);
+                        
+                        currentTotal += angleToUse[i];
+                        
+                        nodes1[0] = pos.x;
+                        nodes1[1] = pos.y;
+                        nodes1[2] = 1; //quadrant
+                        nodes1[3] = angleToUse[i]; //angle
+                        nodes1[4] = colors[0]; //color
+                        nodes1[5] = Math.radians(prevAngles[i]); //prevAngle
+                        nodes1[6] = currentTotal; //total Angles
 
-                    if(firstTime) {
-                        console.log(nodes2);
-                        firstTime =false;
+                        for (j=0;j<nodes1.length;j++) interNode[j] = nodes1[j];
+
+                        allNodes1[idx].push(interNode);
+
                     }
 
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 2; //quadrant
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 30; //angle
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[1]; //color
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(0); //prevAngle
+                    // nodes2[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 90 + 30; //total Angles
 
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 3; //quadrant
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 30; //angle
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[2]; //color
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(0); //prevAngle
+                    // nodes3[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 180 + 30; //total Angles
 
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE] = pos.x;
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 1] = pos.y;
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 2] = 4; //quadrant
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 3] = 30; //angle
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 4] = colors[3]; //color
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 5] = Math.radians(0); //prevAngle
+                    // nodes4[idx * ATTRIBUTES_PER_PRIMITIVE + 6] = 270 + 30; //total Angles
+                    ////
 
                 },
 
@@ -441,72 +457,83 @@ function buildCircleNodeShader() {
                 render : function() {
                     gl.useProgram(program);
                     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes1, gl.DYNAMIC_DRAW);
 
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
+                    for (i=0; i<allNodes1.length;i++){
+
+                        for(j=0;j<allNodes1[i].length;j++){
+                            
+                            if(firstTime) {
+                                console.log(allNodes1[i][j]);
+                                firstTime =false;
+                            }
+                            gl.bufferData(gl.ARRAY_BUFFER, allNodes1[i][j], gl.DYNAMIC_DRAW);
+
+                            if (isCanvasDirty) {
+                                isCanvasDirty = false;
+                                gl.uniformMatrix4fv(locations.transform, false, transform);
+                                gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                                gl.uniform1f(locations.size, 24.0);
+                            }
+
+                            gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                            gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                            gl.vertexAttribPointer(locations.anglesAndColor, 3, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
+                            gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+
+
+                            gl.drawArrays(gl.POINTS, 0, 1);
+                        }
                     }
 
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.anglesAndColor, 3, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
-                    gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 6*4);
+
+                    // gl.bufferData(gl.ARRAY_BUFFER, nodes2, gl.DYNAMIC_DRAW);
+
+                    // if (isCanvasDirty) {
+                    //     isCanvasDirty = false;
+                    //     gl.uniformMatrix4fv(locations.transform, false, transform);
+                    //     gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                    //     gl.uniform1f(locations.size, 24.0);
+                    // }
+
+                    // gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    // gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    // gl.vertexAttribPointer(locations.anglesAndColor, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
+                    // gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 5*4);
 
 
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
+                    // gl.drawArrays(gl.POINTS, 0, nodesCount);
 
+                    // gl.bufferData(gl.ARRAY_BUFFER, nodes3, gl.DYNAMIC_DRAW);
 
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes2, gl.DYNAMIC_DRAW);
+                    // if (isCanvasDirty) {
+                    //     isCanvasDirty = false;
+                    //     gl.uniformMatrix4fv(locations.transform, false, transform);
+                    //     gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                    //     gl.uniform1f(locations.size, 24.0);
+                    // }
 
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
-                    }
+                    // gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    // gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    // gl.vertexAttribPointer(locations.anglesAndColor, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
+                    // gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 5*4);
 
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.anglesAndColor, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
-                    gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 5*4);
+                    // gl.drawArrays(gl.POINTS, 0, nodesCount);
 
+                    // gl.bufferData(gl.ARRAY_BUFFER, nodes4, gl.DYNAMIC_DRAW);
 
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
+                    // if (isCanvasDirty) {
+                    //     isCanvasDirty = false;
+                    //     gl.uniformMatrix4fv(locations.transform, false, transform);
+                    //     gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
+                    //     gl.uniform1f(locations.size, 24.0);
+                    // }
 
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes3, gl.DYNAMIC_DRAW);
+                    // gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
+                    // gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
+                    // gl.vertexAttribPointer(locations.anglesAndColor, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
+                    // gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 5*4);
 
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
-                    }
-
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.anglesAndColor, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
-                    gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 5*4);
-
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
-
-                    gl.bufferData(gl.ARRAY_BUFFER, nodes4, gl.DYNAMIC_DRAW);
-
-                    if (isCanvasDirty) {
-                        isCanvasDirty = false;
-                        gl.uniformMatrix4fv(locations.transform, false, transform);
-                        gl.uniform2f(locations.screenSize, canvasWidth, canvasHeight);
-                        gl.uniform1f(locations.size, 24.0);
-                    }
-
-                    gl.vertexAttribPointer(locations.vertexPos, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 0);
-                    gl.vertexAttribPointer(locations.quadrant, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 2*4);
-                    gl.vertexAttribPointer(locations.anglesAndColor, 2, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 3*4);
-                    gl.vertexAttribPointer(locations.totalAngles, 1, gl.FLOAT, false, (ATTRIBUTES_PER_PRIMITIVE)* Float32Array.BYTES_PER_ELEMENT, 5*4);
-
-                    gl.drawArrays(gl.POINTS, 0, nodesCount);
+                    // gl.drawArrays(gl.POINTS, 0, nodesCount);
                 },
 
                 /**
@@ -530,11 +557,12 @@ function buildCircleNodeShader() {
                  * Called by webgl renderer to notify us that the new node was created in the graph
                  */
                 createNode : function (node) {
-                    nodes1 = webglUtils.extendArray(nodes1, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
-                    nodes2 = webglUtils.extendArray(nodes2, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
-                    nodes3 = webglUtils.extendArray(nodes3, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
-                    nodes4 = webglUtils.extendArray(nodes4, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
+                    //nodes1 = webglUtils.extendArray(nodes1, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
+                    // nodes2 = webglUtils.extendArray(nodes2, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
+                    // nodes3 = webglUtils.extendArray(nodes3, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
+                    // nodes4 = webglUtils.extendArray(nodes4, nodesCount, ATTRIBUTES_PER_PRIMITIVE);
                     nodesCount += 1;
+                    allNodes1 = new Array(nodesCount);
                 },
 
                 /**
@@ -549,9 +577,9 @@ function buildCircleNodeShader() {
                         // buffer and decrease marker of the "last" node. Gives nice O(1)
                         // performance, but make code slightly harder than it could be:
                         webglUtils.copyArrayPart(nodes1, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
-                        webglUtils.copyArrayPart(nodes2, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
-                        webglUtils.copyArrayPart(nodes3, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
-                        webglUtils.copyArrayPart(nodes4, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
+                        // webglUtils.copyArrayPart(nodes2, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
+                        // webglUtils.copyArrayPart(nodes3, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
+                        // webglUtils.copyArrayPart(nodes4, node.id*ATTRIBUTES_PER_PRIMITIVE, nodesCount*ATTRIBUTES_PER_PRIMITIVE, ATTRIBUTES_PER_PRIMITIVE);
                     }
                 },
 
